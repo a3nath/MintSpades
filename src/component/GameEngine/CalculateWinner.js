@@ -1,6 +1,7 @@
-// Accepts 2 Player objects on same team, returns their combined points & bet
-export const sumTeamScores = (firstMember, secondMember) => {
+// Accepts 2 Player objects on same team and team name. Returns new team object w/ their combined points, bet, and name
+export const sumTeamScores = (firstMember, secondMember, teamName) => {
     const combinedPoints = {
+        name: teamName,
         points: firstMember.points + secondMember.points,
         bet: firstMember.bet + secondMember.bet
     }
