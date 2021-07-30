@@ -12,7 +12,7 @@ const GameComponent = () => {
     let winner = "Team One";
 
     return (
-        <div>
+        <div className='gamePage'>
             <h1>
                 This is the GamePage
             </h1>
