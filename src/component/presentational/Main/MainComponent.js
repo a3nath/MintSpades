@@ -3,26 +3,19 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import { Switch } from 'react-router';
 import GameComponent from '../../container/Game/GameComponent';
 import TutorialComponent from '../Tutorial/TutorialComponent';
+import LandingComponent from '../Landing/LandingComponent';
 
 const Main = () => {
     return (
         <Router>
             <Nav />
             <Switch>
-                <Route exact={true} path="/" component={Landing} />
+                <Route exact={true} path="/" component={LandingComponent} />
                 <Route exact={true} path="/tutorial" component={TutorialComponent}/>
                 <Route exact={true} path="/play" component={GameComponent}/>
             </Switch>
         </Router>
     );
-}
-
-const Landing = () => {
-    return (
-        <h1>
-            This is the landing page.
-        </h1>
-    )
 }
 
 const Nav = () => {
