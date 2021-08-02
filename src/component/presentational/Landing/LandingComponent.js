@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyledEngineersContainer, StyledIntroTextContainer, StyledIntroTextLine, StyledLandingContainer, StyledLandingSection, StyledVideoDemoWrapper, StyledEngineerCard, StyledTechContainer, StyledTechCard, StyledTechCardName, StyledEngineerCardName } from './LandingComponentStyles';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
-import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 
 const LandingComponent = () => {
     return (
