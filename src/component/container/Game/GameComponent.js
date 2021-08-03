@@ -18,6 +18,7 @@ const GameComponent = () => {
             <h1>
                 This is the GamePage
             </h1>
+               <div className='card'></div><div id="cardChoice"></div>
             <div className="hand">
               <h1>Play Spades</h1>
               {deal ? <button  onClick={() => {
