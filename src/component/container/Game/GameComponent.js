@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import WinnerModalComponent from './WinnerModal/WinnerModalComponent';
-import {executeGamePlay} from '../../GameEngine/gameplayFunctions.js'
+import {executeGamePlay, dealCards} from '../../GameEngine/gameplayFunctions.js'
 import './renderHand.css'
 const GameComponent = () => {
     const [gameOver, setGameOver] = useState(false);
-    
+    const [deal, setGameStart] = useState(true)
 
     const onPlayAgainHandler = () => {
         setGameOver(false);
@@ -20,9 +20,19 @@ const GameComponent = () => {
             </h1>
             <div className="hand">
               <h1>Play Spades</h1>
-              <button onClick={() => executeGamePlay()}>
+              {deal ? <button  onClick={() => {
+                  dealCards()
+                  if(deal) {
+                      setGameStart(false)
+                    } else {
+                      setGameStart(true)
+                  }}}>
                 Click to DeaL
-               </button>
+               </button> :<button  onClick={() => {
+                  executeGamePlay()
+               }}>
+                Play
+               </button> }
                <div id="hand"></div>
             </div>
             <button onClick={() => setGameOver(true)}>
