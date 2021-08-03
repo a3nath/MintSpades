@@ -1,3 +1,4 @@
+//import {} from "../container/Game/botplay.js"
 let players = [
     {
       isWinner: true,
@@ -6,7 +7,7 @@ let players = [
       name: 'Bob',
       bet: 0,
       points:0,
-      
+      num: '1' ,
     },
     {
       isWinner: false,
@@ -14,8 +15,8 @@ let players = [
       team: "B",
       name: 'Jack',
       bet: 0,
-      points:0,
-      
+      score: 0,
+      num: '2'
     },
     {
       isWinner: false,
@@ -24,6 +25,7 @@ let players = [
       name: 'You',
       bet: 0,
       points:0,
+      num: '3'
     },
     {
       isWinner: false,
@@ -32,6 +34,7 @@ let players = [
       name: 'Jill',
       bet: 0,
       points:0,
+      num: '4'
     }
   ];
   let suites = [
@@ -136,7 +139,153 @@ let players = [
         
           document.getElementById('hand').appendChild(card);
      }
-  }
+}
+
+const humanCard = window.document.querySelector('.card');
+
+humanCard.forEach(card => card.addEventListener('click', humanClicked));
+
+// function checkValid(card){
+//     if (cardsTable.len > 0){
+//         let prevcard = cardsTable[cardsTable.len - 1]
+//         checkValid(cardSelected)
+        
+//     }
+// }
+
+//human clicked card
+
+function humanClicked(e){
+    //translate target value to card value
+    //check card selected valid
+    // checkValid()
+    console.log('here')
+}
+
+const humanTurn = (player, turn, suit) => {
+    let cards = player.hands;
+    //allowed cards highlight
+    let allowedCards  = cards.filter(card => card.suit === suit)
+    //prompt to click card
+    //wait for click event
+    // humanCard.forEach(card => card.addEventListener('click', cardCliked));    
+};
+
+const validCard = (turn, cards, suit) => {
+    //get allowed cards from player deck
+    let allowedCards  = cards.filter(card => card.suit === suit)
+    if (allowedCards.length > 0){
+        cardsTable.push({'turn': turn, 'cards' : allowedCards[0]})
+    }
+    //else play spades
+    //otherwise get any card
+    else {
+        cardsTable.push({'turn': turn , 'cards':cards[0]})
+    }
+}
+
+let cardsTable = [];
+
+//bot turn
+
+const botTurn = (player, turn, suit) => {
+ let cards = player.hand;
+ console.log(player)
+ console.log(cards)
+
+ if (cardsTable.len > 0){ //hand.length > 0
+    //play valid bot turn
+     validCard(turn, cards, suit)
+ }
+ //if no card on table play first card { turn: 1, cards:[{ suit:, value: }] }
+ else cardsTable.push({'turn': turn, 'cards':cards[0]})
+}
+
+
+
+
+
+//calculate score for each round
+const roundScore = (suit) => {
+    //arr of filtered winning suit
+    let arrWinSuit = cardsTable.filter(card => card.cards.suit === suit)
+    //card
+    let winCard = arrWinSuit.map(arr => arr.cards.value).reduce(function (prevNum, currNum){
+        return (currNum > prevNum) ? currNum : prevNum;
+    },0);
+    let winIndex = arrWinSuit.filter(card => card.vards.value === winCard)[0].turn
+    //update player arr score by 10 points
+    players = [...players,  {...players[winIndex], score: players[winIndex].score + 10}]
+}
+
+//current player turn
+//determines player turn
+let currentTurn = 0;
+
+//current player object
+let currentPlayer = {};
+
+//funcitons for Round
+const round = () => {
+    //round start
+    //let roundStart = true;
+    let suit = ''
+    //turns remaining
+    //turns played so far
+    let turnsPlayed = 0;
+    if (turnsPlayed < players.length) {
+        currentTurn += 1
+        //filter out players
+        currentPlayer = players.filter(player => player.num === currentTurn)
+        if (cardsTable.len > 0){
+            //current suit
+            //cardsTable
+            let arrSpades = cardsTable.filter(played => played.cards.suit === 'spades')
+            let arrSuit = cardsTable.filter(played => played.turn === 1)
+            if (arrSpades){
+                suit = 'spades'
+            }
+            else{
+                suit = arrSuit.cards.suit
+            }
+        }
+        if (currentPlayer.name !=='You') {
+            botTurn(currentPlayer, currentTurn, suit)
+            turnsPlayed += 1
+        }
+        else {
+            humanTurn(currentPlayer, currentTurn, suit)
+            turnsPlayed += 1
+            // human play function
+            // check valid card played
+        }
+        //}
+            //wait for human turn
+                //if card played valid
+                    //turn end
+                //else human turn again
+    //cardsTable = []
+    }
+    //roundStart = false
+    //calculate round winner
+    roundScore(suit)
+}
+
+
+const gamePlay = () => {
+    //if players has more than 1 card
+    //play round
+    let i = 0
+    while(i <= 13) {
+        round()
+    }
+        //gameEnd()
+        //calculate score and winner for round
+    
+}
+
+
+
 export const dealCards = () => {
     let deck = shuffleDeck(createDeck())
     deal(deck,players,13)
@@ -161,9 +310,12 @@ export const executeGamePlay = () => {
         }
     //round iteration
     
-    });
+    //if(player.isWinner is true) {
+        //players.unshift(players.splice(index)[0])
     
+    });
 
+    gamePlay()
     
    
     

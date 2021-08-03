@@ -51,7 +51,7 @@ let players = [
             }
         ],
         score: 0
-    },
+    }
 ]
 
 let cardsTable = [];
@@ -59,7 +59,7 @@ let cardsTable = [];
 
 //human card selcted valid
 
-const humanCard = document.querySelector('.card');
+const humanCard = window.document.querySelector('.card');
 
 humanCard.forEach(card => card.addEventListener('click', humanClicked));
 
@@ -77,10 +77,11 @@ function humanClicked(e){
     //translate target value to card value
     //check card selected valid
     // checkValid()
+    console.log('here')
 }
 
 const humanTurn = (player, turn, suit) => {
-    let cards = player.cards;
+    let cards = player.hands;
     //allowed cards highlight
     let allowedCards  = cards.filter(card => card.suit === suit)
     //prompt to click card
@@ -92,8 +93,8 @@ const humanTurn = (player, turn, suit) => {
 
 const validCard = (turn, cards, suit) => {
     //get allowed cards from player deck
-    let allowedCards  = cards.filter(card => card.suit == suit)
-    if (allowedCards.len > 0){
+    let allowedCards  = cards.filter(card => card.suit === suit)
+    if (allowedCards.length > 0){
         cardsTable.push({'turn': turn, 'cards' : allowedCards[0]})
     }
     //else play spades
@@ -106,9 +107,9 @@ const validCard = (turn, cards, suit) => {
 //bot turn
 
 const botTurn = (player, turn, suit) => {
- let cards = player.cards;
+ let cards = player.hand;
 
- if (cardsTable.len > 0){
+ if (cardsTable.len > 0){ //hand.length > 0
     //play valid bot turn
      validCard(turn, cards, suit)
  }
@@ -118,7 +119,7 @@ const botTurn = (player, turn, suit) => {
 
 
 //whose turn it is
-let turn = true;
+//let turn = true;
 
 //current player turn
 //determines player turn
@@ -139,19 +140,19 @@ const roundScore = (suit) => {
     players = [...players,  {...players[winIndex], score: players[winIndex].score + 10}]
 }
 
-[{'turn': 1, cards: {suit:'diamond', value:3 }}, {turn:2, cards: {}}, ]
+
 
 const round = () => {
     //round start
-    let roundStart = true;
+    //let roundStart = true;
     let suit = ''
     //turns remaining
     //turns played so far
     let turnsPlayed = 0;
-    if (turnsPlayed < len(players)) {
+    if (turnsPlayed < players.length) {
         currentTurn += 1
         //filter out players
-        currentPlayer = players.filter(player => player.num == currentTurn)
+        currentPlayer = players.filter(player => player.num === currentTurn)//who the player is?
         if (cardsTable.len > 0){
             //current suit
             //cardsTable
@@ -164,7 +165,7 @@ const round = () => {
                 suit = arrSuit.cards.suit
             }
         }
-        if (currentPlayer.type == 'bot') {
+        if (currentPlayer.type === 'bot') {
             botTurn(currentPlayer, currentTurn, suit)
             turnsPlayed += 1
         }
@@ -181,7 +182,7 @@ const round = () => {
                 //else human turn again
     //cardsTable = []
     }
-    roundStart = false
+    //roundStart = false
     //calculate round winner
     roundScore(suit)
 }
@@ -189,12 +190,12 @@ const round = () => {
 const gamePlay = () => {
     //if players has more than 1 card
     //play round
-    if (players[0].cards.len > 1){
+    if (players[0].cards.length > 1){
     //play round
-        round()
+        round();
     }
     else {
-        gameEnd()
+        //gameEnd()
         //calculate score and winner for round
     }
 }
