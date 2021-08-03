@@ -123,28 +123,44 @@ let players = [
           card.className = "card";
           value.className = "value";
           suit.className = "suit " + hand[i].Suite;
-  
           value.innerHTML = hand[i].Value;
+          card.addEventListener('click', (e) => {
+              let collection = e.target.children
+              console.log(collection)
+              if(collection.length === 2){
+                  console.log(e.target.children[0])
+                  console.log(e.target.children[1])
+              } });
+          }
           card.appendChild(value);
           card.appendChild(suit);
-  
+          
           document.getElementById('hand').appendChild(card);
-      }
+      
   }
-export const executeGamePlay = () => {
-    
-
+export const dealCards = () => {
     let deck = shuffleDeck(createDeck())
     deal(deck,players,13)
     players.forEach(x => {
-        if(x.name === 'You'){
+        if (x.name === 'You'){
             renderHand(x.hand)
-        }else {
+        }})
+    
+}
+export const executeGamePlay = () => {
+     players.forEach(x => {
+        if (x.name === 'You'){
+            renderHand(x.hand)
+            x.bet = prompt('please give Bet Amount')
+            console.log(x.bet)
+        } else {
             makeBets(x.hand,x.bet)
+            //render comment for the botand updates the bet for the bots
+            console.log(`${x.name} bet ${x.bet}`)
         }
     });
-    //showBetInquiryModal()
     
+
     
    
     
