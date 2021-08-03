@@ -16,6 +16,10 @@ const GameComponent = () => {
             <h1>
                 This is the GamePage
             </h1>
+            <div className='card'>
+                <div className='value'>7</div>
+                <div className='suit diamond'></div> 
+            </div>
             <button onClick={() => setGameOver(true)}>
                 Click for game over!
             </button>

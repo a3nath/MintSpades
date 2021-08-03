@@ -51,7 +51,7 @@ let players = [
             }
         ],
         score: 0
-    },
+    }
 ]
 
 let cardsTable = [];
@@ -59,7 +59,7 @@ let cardsTable = [];
 
 //human card selcted valid
 
-const humanCard = document.querySelector('.card');
+const humanCard = window.document.querySelector('.card');
 
 humanCard.forEach(card => card.addEventListener('click', humanClicked));
 
@@ -77,6 +77,7 @@ function humanClicked(e){
     //translate target value to card value
     //check card selected valid
     // checkValid()
+    console.log('here')
 }
 
 const humanTurn = (player, turn, suit) => {
