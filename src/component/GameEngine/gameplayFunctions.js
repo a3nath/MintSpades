@@ -7,7 +7,7 @@ let players = [
       name: 'Bob',
       bet: 0,
       points:0,
-      num: 0 ,
+      num:0
     },
     {
       isWinner: false,
@@ -59,35 +59,39 @@ let players = [
     '2'
   ];
   
+
 let createDeck = () => {
     let deck = []; 
     for (let suit of suits) {
       for(let value of values) {
         deck.push({Value:value,Suit:suit})
+
       }
     }
     
     return deck;
-}
+  }
   
-function shuffleDeck(deck) {
+  function shuffleDeck(deck) {
     let count = deck.length;
     while(count) {
       deck.push(deck.splice(Math.floor(Math.random() * count), 1)[0]);
       count -= 1;
     }
     return deck
-}
+
+  }
   
-function deal(deck, players, numCards) {
+  function deal(deck, players, numCards) {
     players.forEach(player => {
       while(player.hand.length !== numCards) {
         player.hand.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
       }
     });
-}
+  }
   
-function makeBets(hand, bet){
+  function makeBets(hand, bet){
+
     let spades = 0;
     let hearts = 0;
     let diamonds = 0;
@@ -103,6 +107,8 @@ function makeBets(hand, bet){
         diamonds++
       }
       if(hand[i].Suit === 'clubs'){
+
+
         clubs++
       }
       if (hand[i].Value === "A"|| hand[i].Value === "K" ) {
@@ -113,10 +119,9 @@ function makeBets(hand, bet){
       bet++
     }
     return bet
-}
 
-
-function renderHand(hand)
+  }
+  function renderHand(hand)
   {
         document.getElementById('hand').innerHTML = "";
   
@@ -128,6 +133,7 @@ function renderHand(hand)
           card.className = "card";
           value.className = "value";
           suit.className = "suit " + hand[i].Suit;
+
           value.innerHTML = hand[i].Value;
           card.addEventListener('click', (e) => {
               let collection = e.target.children
@@ -142,6 +148,7 @@ function renderHand(hand)
           document.getElementById('hand').appendChild(card);
      }
 }
+
 
 const WinningSuit = (tableLength) => {
   let suit = ''
@@ -163,6 +170,13 @@ const WinningSuit = (tableLength) => {
 
 // function checkValid(card){
 //     if (cardsTable.length > 0){
+const humanCard = window.document.querySelector('.card');
+
+humanCard.forEach(card => card.addEventListener('click', humanClicked));
+
+// function checkValid(card){
+//     if (cardsTable.len > 0){
+
 //         let prevcard = cardsTable[cardsTable.len - 1]
 //         checkValid(cardSelected)
         
@@ -170,6 +184,7 @@ const WinningSuit = (tableLength) => {
 // }
 
 //human clicked card
+
 
 // function humanClicked(e){
 //     //translate target value to card value
@@ -183,11 +198,23 @@ const humanTurn = (player, turn, suit) => {
     // let cards = player.hand;
     // //allowed cards highlight
     // let allowedCards  = cards.filter(card => card.suit === suit)
+
+function humanClicked(e){
+    //translate target value to card value
+    //check card selected valid
+    // checkValid()
+    console.log('here')
+}
+
+const humanTurn = (player, turn, suit) => {
+    let cards = player.hands;
+    //allowed cards highlight
+    let allowedCards  = cards.filter(card => card.suit === suit)
+
     //prompt to click card
     //wait for click event
     // humanCard.forEach(card => card.addEventListener('click', cardCliked));    
 };
-
 //bot turn
 //bot will play the first card in its deck
 // if it has winning suit then first winning suit
@@ -248,6 +275,7 @@ const round = () => {
         }
         currentTurn = currentTurn + 1
 
+
         //}
             //wait for human turn
                 //if card played valid
@@ -257,6 +285,7 @@ const round = () => {
     }
     //roundStart = false
     //calculate round winner
+
     // roundScore(suit, cardsTable)
 }
 
@@ -277,6 +306,7 @@ const round = () => {
 
 
 
+
 const gamePlay = () => {
     //if players has more than 1 card
     //play round
@@ -286,6 +316,7 @@ const gamePlay = () => {
     }
         //gameEnd()
         //calculate score and winner for round
+
 }
 
 
@@ -311,17 +342,19 @@ export const executeGamePlay = () => {
             //render comment for the botand updates the bet for the bots
             // console.log(`${x.name} bet ${x.bet}`)
             // console.log(`${x.name} : ${JSON.stringify(x.hand)} `)
+
         }
     //round iteration
     
     //if(player.isWinner is true) {
         //players.unshift(players.splice(index)[0])
     
+
     },
     gamePlay());
 
   
-    
+
    
     
     
@@ -345,4 +378,6 @@ export const executeGamePlay = () => {
           //update player order function
       //winner of each round, add bet, set winner, continue iteration of rounds (13 at start) decrement
     // endgame() => //return a winner, is executed at some condition
+
   }
+
