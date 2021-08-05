@@ -193,12 +193,6 @@ humanCard.forEach(card => card.addEventListener('click', humanClicked));
 //     console.log('here')
 // }
 
-const humanTurn = (player, turn, suit) => {
-    console.log('')
-    // let cards = player.hand;
-    // //allowed cards highlight
-    // let allowedCards  = cards.filter(card => card.suit === suit)
-
 function humanClicked(e){
     //translate target value to card value
     //check card selected valid
@@ -352,6 +346,7 @@ export const executeGamePlay = () => {
 
     },
     gamePlay());
+  }
 
   
 
@@ -379,5 +374,4 @@ export const executeGamePlay = () => {
       //winner of each round, add bet, set winner, continue iteration of rounds (13 at start) decrement
     // endgame() => //return a winner, is executed at some condition
 
-  }
 
