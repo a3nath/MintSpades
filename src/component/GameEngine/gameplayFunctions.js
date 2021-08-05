@@ -150,9 +150,9 @@ let createDeck = () => {
 }
 
 
-const WinningSuit = (tableLength) => {
+const WinningSuit = (cardsTable) => {
   let suit = ''
-  if (tableLength > 0) {
+  if (cardsTable.length > 0) {
     if  (cardsTable.filter(played => played.cards.Suit === 'spades')){
       suit = 'spades'
     }
@@ -238,23 +238,69 @@ const botTurn = (player, turn, suit, cardsTable) => {
 }
 
 
+//round Score
+
+const highCard = (prevCard, newCard) => {
+  const pictureSuit = ['J', 'Q', 'K', 'A']
+  if  (Number.isInteger(prevCard) && Number.isInteger(newCard)){
+   if (prevCard > newCard){
+      return prevCard
+    }
+    else return newCard
+  }
+  else if (Number.isInteger(prevCard)){
+    return newCard
+  }
+  else if (Number.isInteger(newCard)){
+    return prevCard
+ }
+ else if (pictureSuit.indexOf(prevCard) > pictureSuit.indexOf(newCard)){
+    return prevCard
+  }
+  else return newCard
+}
+
+//calculate score for each round
+const roundScore = (suit, cardsTable, player) => {
+  //arr of filtered winning suit
+  let prevIndex = player.num;
+  console.log(cardsTable)
+  let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
+  //card
+  let winVal = arrWinSuit.map(arr => arr.cards.Value).reduce(highCard,0);
+  //winCard {cards:{suit, val: }, index: , name: turn: }
+  let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
+  let winIndex = winCard.index;
+  //remove prevWinner
+  if (prevIndex !== winIndex){
+    players = [...players, {...players[prevIndex], 'isWinner': false}]
+  }
+  //update players arr 
+  //score by 10 points, isWinner
+  players = [...players,  {...players[winIndex], 'isWinner': true, 'score': players[winIndex].score + 10}]
+}
+
+
+
 //funcitons for Round
 const round = () => {
+    //current player turn
+    let currentTurn = 0;
+    //current player object
+    let currentPlayer = {};
+    //cards on table being played
+    let cardsTable = [];
+    let tableLength = cardsTable.length()
+    let suit = ""
  
     //play 4 turns in a round
     for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
-        //current player turn
-        let currentTurn = 0;
-        //current player object
-        let currentPlayer = {};
-        //cards on table being played
-        let cardsTable = [];
-        let tableLength = cardsTable.length()
+        
         //filter out players to get current turn player
         //At starting, its first player
         //shpuld then switch to whoever wins round
         //this should switch to player who won round
-        let suit = WinningSuit(tableLength)
+        suit = WinningSuit(tableLength)
         currentPlayer = players.filter(player => player.isWinner)[0]
         
         //play Turn
@@ -263,25 +309,17 @@ const round = () => {
             botTurn(currentPlayer, turnsPlayed, suit, cardsTable)
         }
         else {
-            humanTurn(currentPlayer, currentTurn, suit, cardsTable)
+            humanTurn(currentPlayer, turnsPlayed, suit, cardsTable)
             // human play function
             // check valid card played
         }
+        //calculate round winner
         currentTurn = currentTurn + 1
-
-
-        //}
-            //wait for human turn
-                //if card played valid
-                    //turn end
-                //else human turn again
-    //cardsTable = []
-    }
-    //roundStart = false
-    //calculate round winner
-
-    // roundScore(suit, cardsTable)
+        
+      }
+      roundScore(suit, cardsTable, currentPlayer)
 }
+    
 
 
 //calculate score for each round
@@ -299,8 +337,6 @@ const round = () => {
 // }
 
 
-
-
 const gamePlay = () => {
     //if players has more than 1 card
     //play round
@@ -312,8 +348,6 @@ const gamePlay = () => {
         //calculate score and winner for round
 
 }
-
-
 
 export const dealCards = () => {
     let deck = shuffleDeck(createDeck())
@@ -346,14 +380,9 @@ export const executeGamePlay = () => {
 
     },
     gamePlay());
-  }
+}
 
-  
 
-   
-    
-    
-    
     
     
   
