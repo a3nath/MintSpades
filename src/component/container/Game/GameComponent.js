@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import WinnerModalComponent from './WinnerModal/WinnerModalComponent';
-import {executeGamePlay, dealCards, gamePlay} from '../../GameEngine/gameplayFunctions.js'
-import './renderHand.css'
+import {executeGamePlay, dealCards, gamePlay} from '../../GameEngine/gameplayFunctions.js';
+import './renderHand.css';
+
 const GameComponent = () => {
     const [gameOver, setGameOver] = useState(false);
     const [deal, setGameStart] = useState(true)
@@ -27,10 +28,9 @@ const GameComponent = () => {
                     } else {
                       setGameStart(true)
                   }}}>
-                Click to DeaL
+                Click to Deal
                </button> :<button  onClick={() => {
-                //   executeGamePlay()
-                gamePlay()
+                executeGamePlay()
                }}>
                 Play
                </button> }

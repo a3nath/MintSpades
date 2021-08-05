@@ -149,7 +149,6 @@ let createDeck = () => {
      }
 }
 
-
 const WinningSuit = (cardsTable) => {
   let suit = ''
   if (cardsTable.length > 0) {
@@ -163,49 +162,20 @@ const WinningSuit = (cardsTable) => {
   return suit
 }
 
-// const humanCard = window.document.querySelector('.card');
-
-
-// humanCard.forEach(card => card.addEventListener('click', console.log('human')));
-
-// function checkValid(card){
-//     if (cardsTable.length > 0){
-const humanCard = window.document.querySelector('.card');
-
-humanCard.forEach(card => card.addEventListener('click', humanClicked));
-
-// function checkValid(card){
-//     if (cardsTable.len > 0){
-
-//         let prevcard = cardsTable[cardsTable.len - 1]
-//         checkValid(cardSelected)
-        
-//     }
-// }
+// humanCard.forEach(card => card.addEventListener('click', humanClicked));
 
 //human clicked card
-
 
 // function humanClicked(e){
 //     //translate target value to card value
 //     //check card selected valid
 //     // checkValid()
-//     console.log('here')
 // }
-
-function humanClicked(e){
-    //translate target value to card value
-    //check card selected valid
-    // checkValid()
-    console.log('here')
-}
 
 const humanTurn = (player, turn, suit) => {
     let cards = player.hands;
-    //allowed cards highlight
     let allowedCards  = cards.filter(card => card.suit === suit)
 
-    //prompt to click card
     //wait for click event
     // humanCard.forEach(card => card.addEventListener('click', cardCliked));    
 };
@@ -213,7 +183,7 @@ const humanTurn = (player, turn, suit) => {
 //bot will play the first card in its deck
 // if it has winning suit then first winning suit
 
-const botSuit = (turn,name, num, cards, suit, cardsTable) => {
+const botSuit = (turn,name, num, cards, suit, cardsTable, allowedCards) => {
     cardsTable.push({'turn': turn, 'name': name, 'cards' : allowedCards[0]})
     players = [...players,  {...players[num], hand: players[num].hand.splice(0,1)}]
 }
@@ -228,7 +198,7 @@ const botTurn = (player, turn, suit, cardsTable) => {
     allowedCards  = cards.filter(card => card.Suit === suit)
  }
  if (allowedCards){
-  botSuit(turn, name, num, cards, suit, cardsTable)
+  botSuit(turn, name, num, cards, suit,cardsTable, allowedCards)
  }
  //if no card on table play first card { turn: 1, cards:[{ suit:, value: }] }
  else {
@@ -290,34 +260,29 @@ const round = () => {
     let currentPlayer = {};
     //cards on table being played
     let cardsTable = [];
-    let tableLength = cardsTable.length()
+    let tableLength = cardsTable.length
     let suit = ""
  
     //play 4 turns in a round
     for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
         
-        //filter out players to get current turn player
-        //At starting, its first player
-        //shpuld then switch to whoever wins round
-        //this should switch to player who won round
         suit = WinningSuit(tableLength)
+        //At starting, its first player
+        //should then switch to whoever wins round
         currentPlayer = players.filter(player => player.isWinner)[0]
         
         //play Turn
-        
         if (currentPlayer.name !== 'You') {
             botTurn(currentPlayer, turnsPlayed, suit, cardsTable)
         }
         else {
             humanTurn(currentPlayer, turnsPlayed, suit, cardsTable)
-            // human play function
-            // check valid card played
         }
-        //calculate round winner
         currentTurn = currentTurn + 1
         
       }
-      roundScore(suit, cardsTable, currentPlayer)
+        //calculate round winner after round ends
+      //roundScore(suit, cardsTable, currentPlayer)
 }
     
 
@@ -337,7 +302,7 @@ const round = () => {
 // }
 
 
-const gamePlay = () => {
+export const gamePlay = () => {
     //if players has more than 1 card
     //play round
     let i = 0
@@ -346,7 +311,6 @@ const gamePlay = () => {
     }
         //gameEnd()
         //calculate score and winner for round
-
 }
 
 export const dealCards = () => {
@@ -356,8 +320,8 @@ export const dealCards = () => {
         if (x.name === 'You'){
             renderHand(x.hand)
         }})
-    
 }
+
 export const executeGamePlay = () => {
     //bet cycle
      players.forEach(x => {
@@ -378,29 +342,11 @@ export const executeGamePlay = () => {
         //players.unshift(players.splice(index)[0])
     
 
-    },
-    gamePlay());
+    }
+    //,gamePlay()
+  );
 }
 
-
-    
-    
-  
-    //sortHands(based on point system, which changes on initial card played, initial sort will exclude spades as top values, highest card in suit, order is arbitrary )// uneeded for mvp
-    //makeBets(bets are based on number of top cards, spades, and if less than or equal to only two of a suit is present we add 1 bet - but only if we have atleast 1 spade ( the logic is that we will run out of that suite sooner and we will win based on playing a low spade))
-    
-    //iterate through currentState 
-      //if player.isWinner is true 
-         
-        //player.playHand()//slices value from hand array
-        //if player.name === 'you'
-          // await for click
-          // click event will send card value 
-          //search in hand array event target value, splice it out of player array
-          //playerhand.splice()
-          //remove node or rerender players hand
-          //update player order function
-      //winner of each round, add bet, set winner, continue iteration of rounds (13 at start) decrement
-    // endgame() => //return a winner, is executed at some condition
+ // endgame() => //return a winner, is executed at some condition
 
 
