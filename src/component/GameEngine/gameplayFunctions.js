@@ -58,7 +58,6 @@ let players = [
     '3',
     '2'
   ];
-  
 
 let createDeck = () => {
     let deck = []; 
@@ -70,28 +69,27 @@ let createDeck = () => {
     }
     
     return deck;
-  }
+}
   
-  function shuffleDeck(deck) {
-    let count = deck.length;
-    while(count) {
-      deck.push(deck.splice(Math.floor(Math.random() * count), 1)[0]);
-      count -= 1;
-    }
-    return deck
+function shuffleDeck(deck) {
+  let count = deck.length;
+  while(count) {
+    deck.push(deck.splice(Math.floor(Math.random() * count), 1)[0]);
+    count -= 1;
+  }
+  return deck
 
-  }
+}
   
-  function deal(deck, players, numCards) {
-    players.forEach(player => {
-      while(player.hand.length !== numCards) {
-        player.hand.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
-      }
-    });
-  }
+function deal(deck, players, numCards) {
+  players.forEach(player => {
+    while(player.hand.length !== numCards) {
+      player.hand.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
+    }
+  });
+}
   
   function makeBets(hand, bet){
-
     let spades = 0;
     let hearts = 0;
     let diamonds = 0;
@@ -107,8 +105,6 @@ let createDeck = () => {
         diamonds++
       }
       if(hand[i].Suit === 'clubs'){
-
-
         clubs++
       }
       if (hand[i].Value === "A"|| hand[i].Value === "K" ) {
@@ -119,38 +115,39 @@ let createDeck = () => {
       bet++
     }
     return bet
+}
 
-  }
   function renderHand(hand)
   {
-        document.getElementById('hand').innerHTML = "";
-  
-      for(let i = 0; i < hand.length; i++)
-      {
-          let card = document.createElement("div");
-          let value = document.createElement("div");
-          let suit = document.createElement("div");
-          card.className = "card";
-          value.className = "value";
-          suit.className = "suit " + hand[i].Suit;
+    document.getElementById('hand').innerHTML = "";
 
-          value.innerHTML = hand[i].Value;
-          card.addEventListener('click', (e) => {
-              let collection = e.target.children
-              if(collection.length === 2){
-                  console.log(e.target.children[0])
-                  console.log(e.target.children[1])
-              } });
-          
-          card.appendChild(value);
-          card.appendChild(suit);
+    for(let i = 0; i < hand.length; i++)
+    {
+        let card = document.createElement("div");
+        let value = document.createElement("div");
+        let suit = document.createElement("div");
+        card.className = "card";
+        value.className = "value";
+        suit.className = "suit " + hand[i].Suit;
+
+        value.innerHTML = hand[i].Value;
+        card.addEventListener('click', (e) => {
+            let collection = e.target.children
+            if(collection.length === 2){
+                console.log(e.target.children[0])
+                console.log(e.target.children[1])
+            } });
         
-          document.getElementById('hand').appendChild(card);
-     }
+        card.appendChild(value);
+        card.appendChild(suit);
+      
+        document.getElementById('hand').appendChild(card);
+    }
 }
 
 const WinningSuit = (cardsTable) => {
   let suit = ''
+  console.log(cardsTable)
   if (cardsTable.length > 0) {
     if  (cardsTable.filter(played => played.cards.Suit === 'spades')){
       suit = 'spades'
@@ -185,7 +182,6 @@ const humanTurn = (player, turn, suit) => {
 
 const botSuit = (turn,name, num, cards, suit, cardsTable, allowedCards) => {
     cardsTable.push({'turn': turn, 'name': name, 'num':num, 'cards' : allowedCards[0]})
-
     let newPlayers = players.map(function(player){
       if (player.num === num){
         return {...player, 'hand': player.hand.splice(0,1)}
@@ -202,7 +198,6 @@ const botTurn = (player, turn, suit, cardsTable) => {
  let allowedCards = []
 
  if (cardsTable.length > 0 && suit){//hand.length > 0
-
     allowedCards  = cards.filter(card => card.Suit === suit)
  }
  if (allowedCards.length > 0){
@@ -220,7 +215,6 @@ const botTurn = (player, turn, suit, cardsTable) => {
    players = [...newPlayers] 
   }
 }
-
 
 //round Score
 
@@ -243,7 +237,6 @@ const highCard = (prevCard, newCard) => {
   }
   else return newCard
 }
-
 
 //calculate score for each round
 const roundScore = (suit, cardsTable) => {
@@ -273,33 +266,33 @@ const roundScore = (suit, cardsTable) => {
 
 //function for round
 const round = () => {
-    //current player turn
-    //let currentTurn = 0;
-    //cards on table being played
-    let cardsTable = [];
-    let tableLength = cardsTable.length
-    //current suit
-    let suit = ''
-    //play 4 turns in a round
-    for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
-        suit = WinningSuit(cardsTable)
-        //At starting, its first player
-        console.log('players')
-        console.log(players)
-        let currentPlayer = players[turnsPlayed]
-        
-        //play Turn
-        if (currentPlayer.name !== 'You') {
-            botTurn(currentPlayer, turnsPlayed, suit, cardsTable)
-        }
-        else {
-            humanTurn(currentPlayer, turnsPlayed, suit, cardsTable)
-        }
-        // currentTurn = currentTurn + 1
-        
+  //current player turn
+  //let currentTurn = 0;
+  //cards on table being played
+  let cardsTable = [];
+  let tableLength = cardsTable.length
+  //current suit
+  let suit = ''
+  //play 4 turns in a round
+  for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
+      suit = WinningSuit(cardsTable)
+      //At starting, its first player
+      console.log('players')
+      console.log(players)
+      let currentPlayer = players[turnsPlayed]
+      
+      //play Turn
+      if (currentPlayer.name !== 'You') {
+          botTurn(currentPlayer, turnsPlayed, suit, cardsTable)
       }
-        //calculate round winner after round ends
-      roundScore(suit, cardsTable)
+      else {
+          humanTurn(currentPlayer, turnsPlayed, suit, cardsTable)
+      }
+      // currentTurn = currentTurn + 1
+      
+    }
+      //calculate round winner after round ends
+    roundScore(suit, cardsTable)
 }
     
 const gameEnd = () => {
@@ -310,48 +303,43 @@ const gameEnd = () => {
   console.log(`Player1 ${player1Score} Player2 ${player2Score} Player3 ${player3Score} Player4 ${player4Score}`)
 }
 
-
-
 export const gamePlay = () => {
-    //if players has more than 1 card
-    //play round
-    let i = 0
-    while(i <= 13) {
-        round()
-        i++
-        console.log('round')
-        console.log(i)
-    }
-        gameEnd()
-        //calculate score and winner for round
+  //if players has more than 1 card
+  //play round
+  let i = 0
+  while(i <= 13) {
+      round()
+      i++
+      console.log('round')
+      console.log(i)
+  }
+  //calculate score and winner for round
+  gameEnd()
 }
 
 export const dealCards = () => {
-    let deck = shuffleDeck(createDeck())
-    deal(deck,players,13)
-    players.forEach(x => {
-        if (x.name !== 'You'){
-            renderHand(x.hand)
-        }})
+  let deck = shuffleDeck(createDeck())
+  deal(deck,players,13)
+  players.forEach(x => {
+      if (x.name !== 'You'){
+          renderHand(x.hand)
+      }})
 }
 
 export const executeGamePlay = () => {
-    //bet cycle
-     players.forEach(x => {
-        if (x.name !== 'You'){
-            //renderHand(x.hand)
-            x.bet = prompt('please give Bet Amount')
-            // console.log(x.bet)
-        } else {
-            x.bet = makeBets(x.hand,x.bet);
-            //render comment for the botand updates the bet for the bots
-            console.log(`${x.name} bet ${x.bet}`)
-            // console.log(`${x.name} : ${JSON.stringify(x.hand)} `)
+  //bet cycle
+    players.forEach(x => {
+      if (x.name !== 'You'){
+          //renderHand(x.hand)
+          x.bet = prompt('please give Bet Amount')
+          // console.log(x.bet)
+      } else {
+          x.bet = makeBets(x.hand,x.bet);
+          //render comment for the botand updates the bet for the bots
+          console.log(`${x.name} bet ${x.bet}`)
+          // console.log(`${x.name} : ${JSON.stringify(x.hand)} `)
 
-        }
-    }
-    ,gamePlay()
+      }
+  }
+  ,gamePlay()
 )}
-
-
-
