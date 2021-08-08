@@ -210,8 +210,6 @@ const botTurn = (player, turn, suit, cardsTable) => {
  }
  //if no card on table play first card { turn: 1, cards:[{ suit:, value: }] }
  else {
-  console.log('botTurn')
-  console.log(cardsTable)
    cardsTable.push({'turn': turn, 'name':name, 'num':num, 'cards':cards[0]})
    let newPlayers = players.map(function(player){
      if (player.num === num){
@@ -248,7 +246,7 @@ const highCard = (prevCard, newCard) => {
 
 
 //calculate score for each round
-const roundScore = (suit, cardsTable, player) => {
+const roundScore = (suit, cardsTable) => {
   //arr of filtered winning suit
   let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
   //card
@@ -271,6 +269,7 @@ const roundScore = (suit, cardsTable, player) => {
   let slicedPlayers = players.filter(player => player.num < winNum)
   let newPlayers = winPlayers.concat(slicedPlayers)
   players = [...newPlayers]
+  cardsTable = [] 
 }
 
 
@@ -278,20 +277,21 @@ const roundScore = (suit, cardsTable, player) => {
 //funcitons for Round
 const round = () => {
     //current player turn
-    let currentTurn = 0;
-    //current player object
-    let currentPlayer = {};
+    //let currentTurn = 0;
     //cards on table being played
     let cardsTable = [];
     let tableLength = cardsTable.length
-    let suit = ""
- 
+    //current suit
+    let suit = ''
     //play 4 turns in a round
     for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
         suit = WinningSuit(cardsTable)
         //At starting, its first player
         //should then switch to whoever wins round
-        currentPlayer = players[turnsPlayed]
+        //ERROR HERE. NEXT player coming BOB??????????????????????????????????????????????
+        console.log('players')
+        console.log(players)
+        let currentPlayer = players[turnsPlayed]
         
         //play Turn
         if (currentPlayer.name !== 'You') {
@@ -304,7 +304,7 @@ const round = () => {
         
       }
         //calculate round winner after round ends
-      roundScore(suit, cardsTable, currentPlayer)
+      roundScore(suit, cardsTable)
 }
     
 
