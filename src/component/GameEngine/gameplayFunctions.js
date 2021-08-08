@@ -159,8 +159,6 @@ const WinningSuit = (cardsTable) => {
       suit = cardsTable.filter(played => played.turn === 0)[0].cards.Suit
     }
   }
-  console.log('suitTable')
-  console.log(cardsTable)
   return suit
 }
 
@@ -188,11 +186,13 @@ const humanTurn = (player, turn, suit) => {
 const botSuit = (turn,name, num, cards, suit, cardsTable, allowedCards) => {
     cardsTable.push({'turn': turn, 'name': name, 'num':num, 'cards' : allowedCards[0]})
 
-    //Fix INDEXXX
-    //Loop starts back from 0 and then checks winning suit for round score?
-    // players = [...players,  {...players[num], hand: players[num].hand.splice(0,1)}]
-    console.log('botSuitcardsTable')
-    console.log(cardsTable)
+    let newPlayers = players.map(function(player){
+      if (player.num === num){
+        return {...player, 'hand': player.hand.splice(0,1)}
+      }
+      else return {...player}
+    })
+    players = [...newPlayers]  
 }
 
 const botTurn = (player, turn, suit, cardsTable) => {
@@ -202,21 +202,24 @@ const botTurn = (player, turn, suit, cardsTable) => {
  let allowedCards = []
 
  if (cardsTable.length > 0 && suit){//hand.length > 0
-    console.log('al')
-    console.log(allowedCards)
+
     allowedCards  = cards.filter(card => card.Suit === suit)
  }
  if (allowedCards.length > 0){
-  console.log('al')
-  console.log(allowedCards)
   botSuit(turn, name, num, cards, suit,cardsTable, allowedCards)
  }
  //if no card on table play first card { turn: 1, cards:[{ suit:, value: }] }
  else {
+  console.log('botTurn')
+  console.log(cardsTable)
    cardsTable.push({'turn': turn, 'name':name, 'num':num, 'cards':cards[0]})
-  //  players = [...players,  {...players[num], 'hand': players[num].hand.splice(0,1)}]
-   console.log('elsecardsTable')
-   console.log(cardsTable)
+   let newPlayers = players.map(function(player){
+     if (player.num === num){
+       return {...player, 'hand': player.hand.splice(0,1)}
+     }
+     else return {...player}
+   })
+   players = [...newPlayers] 
   }
 }
 
@@ -243,20 +246,26 @@ const highCard = (prevCard, newCard) => {
   else return newCard
 }
 
+
 //calculate score for each round
 const roundScore = (suit, cardsTable, player) => {
   //arr of filtered winning suit
   let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
-  console.log('arrWinSuit')
-  console.log(suit)
   //card
   let winVal = arrWinSuit.map(arr => arr.cards.Value).reduce(highCard,0);
   //winCard {cards:{suit, val: }, index: , name: turn: }
   let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
   let winIndex = winCard.turn;
-  let winNum = winCard.Num
+  let winNum = winCard.num
   //new arr with updated score and isWinn
-  let winPlayers = players.map(player => player.Num === winNum ? (player.isWinner = true  , player.points += 10) : player.isWinner = false )
+  let winPlayers = players.map(function(player){
+    if (player.num== winNum){
+      return {...player, 'isWinner': true, 'points': player.points + 10}
+    }
+    else {
+      return {...player, 'isWinner': false}
+    }
+  })
   //reorder players
   winPlayers.splice(winIndex)
   let slicedPlayers = players.filter(player => player.num < winNum)
@@ -279,13 +288,10 @@ const round = () => {
  
     //play 4 turns in a round
     for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
-        console.log(turnsPlayed)   
-        console.log('round for')
         suit = WinningSuit(cardsTable)
         //At starting, its first player
         //should then switch to whoever wins round
         currentPlayer = players[turnsPlayed]
-        console.log(currentPlayer)
         
         //play Turn
         if (currentPlayer.name !== 'You') {
