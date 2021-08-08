@@ -15,7 +15,7 @@ let players = [
       team: "B",
       name: 'Jack',
       bet: 0,
-      score: 0,
+      points: 0,
       num: 1
     },
     {
@@ -257,7 +257,7 @@ const roundScore = (suit, cardsTable) => {
   let winNum = winCard.num
   //new arr with updated score and isWinn
   let winPlayers = players.map(function(player){
-    if (player.num== winNum){
+    if (player.num === winNum){
       return {...player, 'isWinner': true, 'points': player.points + 10}
     }
     else {
@@ -265,16 +265,13 @@ const roundScore = (suit, cardsTable) => {
     }
   })
   //reorder players
-  winPlayers.splice(winIndex)
-  let slicedPlayers = players.filter(player => player.num < winNum)
-  let newPlayers = winPlayers.concat(slicedPlayers)
+  let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
+  let newPlayers = slicedPlayers.concat(winPlayers)
   players = [...newPlayers]
   cardsTable = [] 
 }
 
-
-
-//funcitons for Round
+//function for round
 const round = () => {
     //current player turn
     //let currentTurn = 0;
@@ -287,8 +284,6 @@ const round = () => {
     for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
         suit = WinningSuit(cardsTable)
         //At starting, its first player
-        //should then switch to whoever wins round
-        //ERROR HERE. NEXT player coming BOB??????????????????????????????????????????????
         console.log('players')
         console.log(players)
         let currentPlayer = players[turnsPlayed]
@@ -307,21 +302,14 @@ const round = () => {
       roundScore(suit, cardsTable)
 }
     
+const gameEnd = () => {
+  let player1Score = players.filter(player => player.num === 0)[0].points
+  let player2Score = players.filter(player => player.num === 1)[0].points
+  let player3Score = players.filter(player => player.num === 2)[0].points
+  let player4Score = players.filter(player => player.num === 3)[0].points
+  console.log(`Player1 ${player1Score} Player2 ${player2Score} Player3 ${player3Score} Player4 ${player4Score}`)
+}
 
-
-//calculate score for each round
-// const roundScore = (suit, cardsTable) => {
-//   //arr of filtered winning suit
-//   console.log(cardsTable)
-//   let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit)
-//   //card
-//   let winCard = arrWinSuit.map(arr => arr.cards.Value).reduce(function (prevNum, currNum){
-//       return (currNum > prevNum) ? currNum : prevNum;
-//   },0);
-//   let winIndex = arrWinSuit.filter(card => card.cards.Value === winCard)[0].turn
-//   //update player arr score by 10 points
-//   players = [...players,  {...players[winIndex], score: players[winIndex].score + 10}]
-// }
 
 
 export const gamePlay = () => {
@@ -331,8 +319,10 @@ export const gamePlay = () => {
     while(i <= 13) {
         round()
         i++
+        console.log('round')
+        console.log(i)
     }
-        //gameEnd()
+        gameEnd()
         //calculate score and winner for round
 }
 
@@ -359,16 +349,9 @@ export const executeGamePlay = () => {
             // console.log(`${x.name} : ${JSON.stringify(x.hand)} `)
 
         }
-    //round iteration
-    
-    //if(player.isWinner is true) {
-        //players.unshift(players.splice(index)[0])
-    
-
     }
     ,gamePlay()
 )}
 
-// endgame() => //return a winner, is executed at some condition
 
 
