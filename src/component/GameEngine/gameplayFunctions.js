@@ -22,7 +22,7 @@ let players = [
       isWinner: false,
       hand: [], 
       team: "A",
-      name: 'Alan',
+      name: 'You',
       bet: 0,
       points:0,
       num: 2
@@ -159,19 +159,25 @@ const WinningSuit = (cardsTable) => {
   return suit
 }
 
-// humanCard.forEach(card => card.addEventListener('click', humanClicked));
+
 
 //human clicked card
 
-// function humanClicked(e){
-//     //translate target value to card value
-//     //check card selected valid
-//     // checkValid()
-// }
+function humanClicked(e){
+  console.log(e)
+}
 
-const humanTurn = (player, turn, suit) => {
-    let cards = player.hands;
-    let allowedCards  = cards.filter(card => card.suit === suit)
+const humanTurn = (player, turn, suit, cardsTable) => {
+    let cards = player.hand;
+    let name = player.name
+    let num = player.num
+    let allowedCards = []
+
+    if (cardsTable.length > 0 && suit){//hand.length > 0
+      allowedCards  = cards.filter(card => card.Suit === suit)
+   }
+   const humanCard = document.querySelectorAll('.card')
+   humanCard.forEach(card => card.addEventListener('click', humanClicked));
 
     //wait for click event
     // humanCard.forEach(card => card.addEventListener('click', cardCliked));    
