@@ -22,7 +22,7 @@ let players = [
       isWinner: false,
       hand: [], 
       team: "A",
-      name: 'You',
+      name: 'Bill',
       bet: 0,
       points:0,
       num: 2
@@ -89,65 +89,64 @@ function deal(deck, players, numCards) {
   });
 }
   
-  function makeBets(hand, bet){
-    let spades = 0;
-    let hearts = 0;
-    let diamonds = 0;
-    let clubs = 0;
-    for(let i = 0; i < hand.length; i++){
-      if(hand[i].Suit === 'spades'){
-        spades++
-      }
-      if(hand[i].Suit === 'hearts'){
-        hearts++
-      }
-      if(hand[i].Suit === 'diamonds'){
-        diamonds++
-      }
-      if(hand[i].Suit === 'clubs'){
-        clubs++
-      }
-      if (hand[i].Value === "A"|| hand[i].Value === "K" ) {
-        bet++
-      }
+function makeBets(hand, bet){
+  let spades = 0;
+  let hearts = 0;
+  let diamonds = 0;
+  let clubs = 0;
+  for(let i = 0; i < hand.length; i++){
+    if(hand[i].Suit === 'spades'){
+      spades++
     }
-    if((spades > 2 && hearts <=2 )||(spades > 2 && diamonds <=2 )|| (spades > 2 && clubs <=2  )) {
+    if(hand[i].Suit === 'hearts'){
+      hearts++
+    }
+    if(hand[i].Suit === 'diamonds'){
+      diamonds++
+    }
+    if(hand[i].Suit === 'clubs'){
+      clubs++
+    }
+    if (hand[i].Value === "A"|| hand[i].Value === "K" ) {
       bet++
     }
-    return bet
+  }
+  if((spades > 2 && hearts <=2 )||(spades > 2 && diamonds <=2 )|| (spades > 2 && clubs <=2  )) {
+    bet++
+  }
+  return bet
 }
 
-  function renderHand(hand)
+function renderHand(hand)
+{
+  document.getElementById('hand').innerHTML = "";
+
+  for(let i = 0; i < hand.length; i++)
   {
-    document.getElementById('hand').innerHTML = "";
+      let card = document.createElement("div");
+      let value = document.createElement("div");
+      let suit = document.createElement("div");
+      card.className = "card";
+      value.className = "value";
+      suit.className = "suit " + hand[i].Suit;
 
-    for(let i = 0; i < hand.length; i++)
-    {
-        let card = document.createElement("div");
-        let value = document.createElement("div");
-        let suit = document.createElement("div");
-        card.className = "card";
-        value.className = "value";
-        suit.className = "suit " + hand[i].Suit;
-
-        value.innerHTML = hand[i].Value;
-        card.addEventListener('click', (e) => {
-            let collection = e.target.children
-            if(collection.length === 2){
-                console.log(e.target.children[0])
-                console.log(e.target.children[1])
-            } });
-        
-        card.appendChild(value);
-        card.appendChild(suit);
+      value.innerHTML = hand[i].Value;
+      card.addEventListener('click', (e) => {
+          let collection = e.target.children
+          if(collection.length === 2){
+              console.log(e.target.children[0])
+              console.log(e.target.children[1])
+          } });
       
-        document.getElementById('hand').appendChild(card);
-    }
+      card.appendChild(value);
+      card.appendChild(suit);
+    
+      document.getElementById('hand').appendChild(card);
+  }
 }
 
 const WinningSuit = (cardsTable) => {
   let suit = ''
-  console.log(cardsTable)
   if (cardsTable.length > 0) {
     if  (cardsTable.filter(played => played.cards.Suit === 'spades')){
       suit = 'spades'
@@ -158,7 +157,6 @@ const WinningSuit = (cardsTable) => {
   }
   return suit
 }
-
 
 
 //human clicked card
@@ -244,30 +242,72 @@ const highCard = (prevCard, newCard) => {
   else return newCard
 }
 
+// function callbackLoop(suit, players, cardsTable){
+//   for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
+//     suit = WinningSuit(cardsTable)
+//     //At starting, its first player
+//     console.log('players')
+//     console.log(players)
+//     let currentPlayer = players[turnsPlayed]
+    
+//     //play Turn
+//     if (currentPlayer.name !== 'You') {
+//         setTimeout(botTurn(currentPlayer, turnsPlayed, suit, cardsTable), 10000)
+//     }
+//     else {
+//         setTimeout(humanTurn(currentPlayer, turnsPlayed, suit, cardsTable), 5000)
+//         //asynchornous code that takers user click
+//         //below function doesnt execute until user input recieved
+//         //should we chain it as a promise
+//         //maybe round score should be chained?
+//     }
+//     // currentTurn = currentTurn + 1
+    
+//   }
+// }
+
 //calculate score for each round
-const roundScore = (suit, cardsTable) => {
-  //arr of filtered winning suit
+//const roundScore = (suit, cardsTable) => {
+  // //arr of filtered winning suit
+  // let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
+  // //card
+  // let winVal = arrWinSuit.map(arr => arr.cards.Value).reduce(highCard,0);
+  // //winCard {cards:{suit, val: }, index: , name: turn: }
+  // console.log(cardsTable)
+  // console.log(suit)
+  // console.log(winVal)
+  // let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
+  // let winIndex = setTimeout(winCard.turn, 1000);
+  // let winNum = winCard.num
+  // console.log(winCard)
+  // //new arr with updated score and isWinn
+  // let winPlayers = players.map(function(player){
+  //   if (player.num === winNum){
+  //     return {...player, 'isWinner': true, 'points': player.points + 10}
+  //   }
+  //   else {
+  //     return {...player, 'isWinner': false}
+  //   }
+  // })
+  // //reorder players
+  // let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
+  // let newPlayers = slicedPlayers.concat(winPlayers)
+  // players = [...newPlayers]
+  // cardsTable = [] 
+//}
+
+
+
+
+function roundScore(suit, cardsTable){
   let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
-  //card
-  let winVal = arrWinSuit.map(arr => arr.cards.Value).reduce(highCard,0);
-  //winCard {cards:{suit, val: }, index: , name: turn: }
-  let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
-  let winIndex = winCard.turn;
-  let winNum = winCard.num
-  //new arr with updated score and isWinn
-  let winPlayers = players.map(function(player){
-    if (player.num === winNum){
-      return {...player, 'isWinner': true, 'points': player.points + 10}
-    }
-    else {
-      return {...player, 'isWinner': false}
-    }
+  let test = new Promise((resolve, reject) => {
+    resolve(arrWinSuit)
   })
-  //reorder players
-  let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
-  let newPlayers = slicedPlayers.concat(winPlayers)
-  players = [...newPlayers]
-  cardsTable = [] 
+
+  test.then(function (value) { 
+    console.log('testPrmose');
+    console.log(value)})
 }
 
 //function for round
@@ -280,11 +320,11 @@ const round = () => {
   //current suit
   let suit = ''
   //play 4 turns in a round
-  for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
+  //
+  // callbackLoop(suit, players, cardsTable)
+  for (let turnsPlayed = 0; turnsPlayed < 2; turnsPlayed++) {
       suit = WinningSuit(cardsTable)
       //At starting, its first player
-      console.log('players')
-      console.log(players)
       let currentPlayer = players[turnsPlayed]
       
       //play Turn
@@ -302,14 +342,20 @@ const round = () => {
       
     }
       //calculate round winner after round ends
-    roundScore(suit, cardsTable)
+    setTimeout(roundScore(suit, cardsTable), 50000)
 }
     
+//callback is for loop
+//function (turnsPlayed)
+//roundScore(suit, cardsTable, callback)
+
 const gameEnd = () => {
   let player1Score = players.filter(player => player.num === 0)[0].points
   let player2Score = players.filter(player => player.num === 1)[0].points
-  let player3Score = players.filter(player => player.num === 2)[0].points
-  let player4Score = players.filter(player => player.num === 3)[0].points
+  let player3Score = 0
+  let player4Score = 0
+  // let player3Score = players.filter(player => player.num === 2)[0].points
+  // let player4Score = players.filter(player => player.num === 3)[0].points
   console.log(`Player1 ${player1Score} Player2 ${player2Score} Player3 ${player3Score} Player4 ${player4Score}`)
 }
 
@@ -320,8 +366,6 @@ export const gamePlay = () => {
   while(i <= 13) {
       round()
       i++
-      console.log('round')
-      console.log(i)
   }
   //calculate score and winner for round
   gameEnd()
@@ -351,5 +395,5 @@ export const executeGamePlay = () => {
 
       }
   }
-  ,gamePlay()
+  ,setTimeout(gamePlay, 10000)
 )}
