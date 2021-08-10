@@ -293,6 +293,10 @@ const round = () => {
       }
       else {
           humanTurn(currentPlayer, turnsPlayed, suit, cardsTable)
+          //asynchornous code that takers user click
+          //below function doesnt execute until user input recieved
+          //should we chain it as a promise
+          //maybe round score should be chained?
       }
       // currentTurn = currentTurn + 1
       
