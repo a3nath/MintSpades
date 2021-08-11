@@ -297,8 +297,6 @@ const highCard = (prevCard, newCard) => {
 //}
 
 
-
-
 function roundScore(suit, cardsTable){
   let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
   let test = new Promise((resolve, reject) => {
@@ -306,12 +304,43 @@ function roundScore(suit, cardsTable){
   })
 
   test.then(function (value) { 
-    console.log('testPrmose');
-    console.log(value)})
+        console.log('testPrmose');
+        let winVal = value.map(arr => arr.cards.Value).reduce(highCard,0)
+        let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
+        console.log(winCard)
+        return winCard})
+      .then(value => {
+        console.log('sec then')
+        console.log(value)
+        let winIndex = value.turn
+        let winNum = value.num
+        let winPlayers = players.map(function(player){
+          if (player.num === winNum){
+            return {...player, 'isWinner': true, 'points': player.points + 10}
+          }
+          else {
+            return {...player, 'isWinner': false}
+          }
+        })
+        //reorder players
+        let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
+        let newPlayers = slicedPlayers.concat(winPlayers)
+        players = [...newPlayers]
+        cardsTable = [] 
+      })
+      .then(finalScore => {
+        let player1Score = players.filter(player => player.num === 0)[0].points;
+        let player2Score = players.filter(player => player.num === 1)[0].points;
+        let player3Score = players.filter(player => player.num === 2)[0].points;
+        let player4Score = players.filter(player => player.num === 3)[0].points;
+        console.log(`Player1 ${player1Score} Player2 ${player2Score} Player3 ${player3Score} Player4 ${player4Score}`)
+      })
+      .catch( err => console.log('something wrong' + err))
 }
 
 //function for round
 const round = () => {
+  console.log('round')
   //current player turn
   //let currentTurn = 0;
   //cards on table being played
@@ -322,7 +351,7 @@ const round = () => {
   //play 4 turns in a round
   //
   // callbackLoop(suit, players, cardsTable)
-  for (let turnsPlayed = 0; turnsPlayed < 2; turnsPlayed++) {
+  for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
       suit = WinningSuit(cardsTable)
       //At starting, its first player
       let currentPlayer = players[turnsPlayed]
@@ -342,7 +371,7 @@ const round = () => {
       
     }
       //calculate round winner after round ends
-    setTimeout(roundScore(suit, cardsTable), 50000)
+    roundScore(suit, cardsTable)
 }
     
 //callback is for loop
@@ -363,12 +392,11 @@ export const gamePlay = () => {
   //if players has more than 1 card
   //play round
   let i = 0
-  while(i <= 13) {
+  while(i <= 12) {
       round()
       i++
   }
   //calculate score and winner for round
-  gameEnd()
 }
 
 export const dealCards = () => {
@@ -394,6 +422,5 @@ export const executeGamePlay = () => {
           // console.log(`${x.name} : ${JSON.stringify(x.hand)} `)
 
       }
-  }
-  ,setTimeout(gamePlay, 10000)
+  },gamePlay()
 )}
