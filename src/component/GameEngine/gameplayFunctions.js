@@ -200,6 +200,7 @@ const botTurn = (player, turn, suit, cardsTable) => {
  let name = player.name
  let num = player.num
  let allowedCards = []
+ console.log('botTurn')
 
  if (cardsTable.length > 0 && suit){//hand.length > 0
     allowedCards  = cards.filter(card => card.Suit === suit)
@@ -267,80 +268,95 @@ const highCard = (prevCard, newCard) => {
 // }
 
 //calculate score for each round
-//const roundScore = (suit, cardsTable) => {
-  // //arr of filtered winning suit
-  // let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
-  // //card
-  // let winVal = arrWinSuit.map(arr => arr.cards.Value).reduce(highCard,0);
-  // //winCard {cards:{suit, val: }, index: , name: turn: }
-  // console.log(cardsTable)
-  // console.log(suit)
-  // console.log(winVal)
-  // let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
-  // let winIndex = setTimeout(winCard.turn, 1000);
-  // let winNum = winCard.num
-  // console.log(winCard)
-  // //new arr with updated score and isWinn
-  // let winPlayers = players.map(function(player){
-  //   if (player.num === winNum){
-  //     return {...player, 'isWinner': true, 'points': player.points + 10}
-  //   }
-  //   else {
-  //     return {...player, 'isWinner': false}
-  //   }
-  // })
-  // //reorder players
-  // let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
-  // let newPlayers = slicedPlayers.concat(winPlayers)
-  // players = [...newPlayers]
-  // cardsTable = [] 
-//}
-
-
-function roundScore(suit, cardsTable){
+const roundScore = (suit, cardsTable) => {
+  //arr of filtered winning suit
   let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
-  let test = new Promise((resolve, reject) => {
-    resolve(arrWinSuit)
+  //card
+  let winVal = arrWinSuit.map(arr => arr.cards.Value).reduce(highCard,0);
+  //winCard {cards:{suit, val: }, index: , name: turn: }
+  let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
+  let winIndex = setTimeout(winCard.turn, 1000);
+  let winNum = winCard.num
+  console.log(winCard)
+  //new arr with updated score and isWinn
+  let winPlayers = players.map(function(player){
+    if (player.num === winNum){
+      return {...player, 'isWinner': true, 'points': player.points + 10}
+    }
+    else {
+      return {...player, 'isWinner': false}
+    }
   })
-
-  test.then(function (value) { 
-        console.log('testPrmose');
-        let winVal = value.map(arr => arr.cards.Value).reduce(highCard,0)
-        let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
-        console.log(winCard)
-        return winCard})
-      .then(value => {
-        console.log('sec then')
-        console.log(value)
-        let winIndex = value.turn
-        let winNum = value.num
-        let winPlayers = players.map(function(player){
-          if (player.num === winNum){
-            return {...player, 'isWinner': true, 'points': player.points + 10}
-          }
-          else {
-            return {...player, 'isWinner': false}
-          }
-        })
-        //reorder players
-        let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
-        let newPlayers = slicedPlayers.concat(winPlayers)
-        players = [...newPlayers]
-        cardsTable = [] 
-      })
-      .then(finalScore => {
-        let player1Score = players.filter(player => player.num === 0)[0].points;
-        let player2Score = players.filter(player => player.num === 1)[0].points;
-        let player3Score = players.filter(player => player.num === 2)[0].points;
-        let player4Score = players.filter(player => player.num === 3)[0].points;
-        console.log(`Player1 ${player1Score} Player2 ${player2Score} Player3 ${player3Score} Player4 ${player4Score}`)
-      })
-      .catch( err => console.log('something wrong' + err))
+  //reorder players
+  let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
+  let newPlayers = slicedPlayers.concat(winPlayers)
+  players = [...newPlayers]
+  cardsTable = [] 
+  let player1Score = players.filter(player => player.num === 0)[0].points;
+  let player2Score = players.filter(player => player.num === 1)[0].points;
+  let player3Score = players.filter(player => player.num === 2)[0].points;
+  let player4Score = players.filter(player => player.num === 3)[0].points;
+  console.log(`Player1 ${player1Score} Player2 ${player2Score} Player3 ${player3Score} Player4 ${player4Score}`)
 }
 
+
+// function roundScore(suit, cardsTable){
+//   let arrWinSuit = cardsTable.filter(card => card.cards.Suit === suit);
+//   let test = new Promise((resolve, reject) => {
+//     console.log('cardsTable')
+//     console.log(cardsTable)
+//     resolve()
+//     console.log('suit')
+//     console.log(suit)
+//     console.log(arrWinSuit)
+//     console.log('arrWinSuit')
+//     return arrWinSuit
+//   })
+
+//   test.then(function (value) { 
+//         console.log('testPrmose');
+//         console.log(value)
+//         let winVal = value.map(arr => arr.cards.Value).reduce(highCard,0)
+//         let winCard = arrWinSuit.filter(card => card.cards.Value === winVal)[0];
+//         console.log("winVal")
+//         console.log(winVal)
+//         console.log("winCard")
+//         console.log(winCard)
+//         return winCard})
+//       .then(value => {
+//         console.log('sec then')
+//         console.log(value)
+//         let winIndex = value.turn
+//         let winNum = value.num
+//         let winPlayers = players.map(function(player){
+//           if (player.num === winNum){
+//             return {...player, 'isWinner': true, 'points': player.points + 10}
+//           }
+//           else {
+//             return {...player, 'isWinner': false}
+//           }
+//         })
+//         //reorder players
+//         let slicedPlayers = winPlayers.splice(winIndex, winPlayers.length - winIndex)
+//         let newPlayers = slicedPlayers.concat(winPlayers)
+//         players = [...newPlayers]
+//         cardsTable = [] 
+//       })
+//       .then(finalScore => {
+//         let player1Score = players.filter(player => player.num === 0)[0].points;
+//         let player2Score = players.filter(player => player.num === 1)[0].points;
+//         let player3Score = players.filter(player => player.num === 2)[0].points;
+//         let player4Score = players.filter(player => player.num === 3)[0].points;
+//         console.log(`Player1 ${player1Score} Player2 ${player2Score} Player3 ${player3Score} Player4 ${player4Score}`)
+//       })
+//       .catch( err => console.log('something wrong' + err))
+// }
+
 //function for round
+
+
+
 const round = () => {
-  console.log('round')
   //current player turn
   //let currentTurn = 0;
   //cards on table being played
@@ -351,7 +367,10 @@ const round = () => {
   //play 4 turns in a round
   //
   // callbackLoop(suit, players, cardsTable)
+
+
   for (let turnsPlayed = 0; turnsPlayed < 4; turnsPlayed++) {
+    
       suit = WinningSuit(cardsTable)
       //At starting, its first player
       let currentPlayer = players[turnsPlayed]
@@ -363,15 +382,12 @@ const round = () => {
       else {
           humanTurn(currentPlayer, turnsPlayed, suit, cardsTable)
           //asynchornous code that takers user click
-          //below function doesnt execute until user input recieved
-          //should we chain it as a promise
-          //maybe round score should be chained?
+          //function executes when user input recieved
       }
-      // currentTurn = currentTurn + 1
       
-    }
-      //calculate round winner after round ends
-    roundScore(suit, cardsTable)
+      // calculate round winner after round ends
+  }
+   roundScore(suit, cardsTable)
 }
     
 //callback is for loop
